@@ -1,0 +1,8 @@
+# Copyright (c) 2020 Pete Johanson, Jamie Ding
+# SPDX-License-Identifier: MIT
+
+config SHIELD_ADAGIO_LEFT
+	def_bool $(shields_list_contains,romac_left)
+
+config SHIELD_ADAGIO_RIGHT
+	def_bool $(shields_list_contains,romac_right)

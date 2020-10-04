@@ -130,6 +130,8 @@
 
 /* The following are select consumer page usages */
 
+#define M_BRIU 0x6F
+#define M_BRID 0x70
 #define M_NEXT 0xB5
 #define M_PREV 0xB6
 #define M_STOP 0xB7
