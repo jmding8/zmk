@@ -19,13 +19,12 @@
         compatible = "zmk,keymap";
 
 // ----------------------------------------------      -----------------------------------------------------
-// | TAB  |  Q   |  W   |  E    |  R   |  T   |          |  Y   |  U   |  I   |  O   |  P   |  \|  |||||||||
-// ||| CAPS |  A   |  S   |  D   |  F   |  G   |          |  H   |  J   |  K   |  L   |  ;:  |  '"  ||||||||
-// ||||| LSFT |  Z   |  X   |  C   |  V   |  B   |          |  N   |  M   |  ,<  |  .>  |  /?  | RSFT ||||||
-// |||||||||||||||||||||||| LCTL | LOPT | LCMD |          | SPC  | LAY1 | LAY2 |||||||||||||||||||||||||||||
+// | TAB  |  Q   |  W   |  E   |  R   |  T   |          |  Y   |  U   |  I   |  O   |  P   |  \|  |
+//   | CAPS |  A   |  S   |  D   |  F   |  G   |          |  H   |  J   |  K   |  L   |  ;:  |  '"  |
+//       | LSFT |  Z   |  X   |  C   |  V   |  B   |          |  N   |  M   |  ,<  |  .>  |  /?  | RSFT |
+//                        | LCTL | LOPT | LCMD |          | SPC  | NAV  | FUN  |
 // -------------------------------------------        ------------------------------------------------------
-
-        apple_layer {
+        default_layer {
             bindings = <
     &lt ADJ TAB &kp Q   &kp W     &kp E     &kp R     &kp T     /**/  &kp Y     &kp U     &kp I     &kp O    &kp P     &lt ADJ BSLH
     &kp ESC   &kp A     &kp S     &kp D     &kp F     &kp G     /**/  &kp H     &kp J     &kp K     &kp L    &kp SCLN  &kp QUOT
@@ -55,7 +54,7 @@
         layer_two {
             bindings = <
     &trans    &kp F1    &kp F2    &kp F3    &kp F4    &kp F5    /**/  &kp CLCK  &trans    &kp VOLU  &trans    &trans    &trans
-    &trans    &kp F6    &kp F7    &kp F8    &kp F9    &kp F10   /**/  &kp PRSC  &kp BRID  &kp VOLD  &kp BRIU  &kp BKSP  &kp RET
+    &trans    &kp F6    &kp F7    &kp F8    &kp F9    &kp F10   /**/  &kp PRSC &kp M_BRID &kp VOLD &kp M_BRIU &kp BKSP  &kp RET
     &trans    &trans    &trans    &kp F11   &kp F12   &trans    /**/  &trans    &trans    &trans    &trans    &kp DEL   &trans
                                   &trans    &trans    &trans    /**/  &trans    &mo ADJ   &trans
             >;
@@ -63,19 +62,12 @@
 
         layer_three {
             bindings = <
-    &trans    &trans    &tog WIN  &trans    &reset    &trans    /**/  &bt BT_SEL 0  &bt BT_CLR  &trans  &trans  &trans
-    &trans    &trans    &trans    &trans    &bootloader &trans  /**/  &bt BT_SEL 1  &trans      &trans  &trans  &trans
-    &trans    &trans    &trans    &bt BT_CLR &trans   &trans    /**/  &bt BT_SEL 2  &trans      &trans  &trans  &trans
-                                  &trans    &trans    &trans    /**/  &trans    &trans    &trans
+    &trans      &trans  &tog WIN  &trans  &reset       &trans      /**/  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &trans  &trans
+    &trans      &trans  &trans    &trans  &bootloader  &trans      /**/  &trans        &trans        &trans        &trans        &trans  &trans
+    &bootloader &trans  &trans    &trans  &trans       &bt BT_CLR  /**/  &trans        &trans        &trans        &trans        &trans  &bootloader
+                              &trans  &trans       &trans      /**/  &trans        &trans        &trans
             >;
         };
+
     };
 };
-
-/*
-    [ADJ] = LAYOUT(
-      _______, _______,     WIN, _______,   RESET, _______,    _______, _______, _______, _______, _______, _______,
-      _______,   APPLE, _______, _______,   Flash, _______,    _______,     BT1,     BT2,     BT3, _______, _______,
-      _______, _______, _______, _______, _______,  BT Rst,    _______, _______, _______, _______, _______, _______,
-                                 _______, _______, _______,    _______, _______, _______
-*/
