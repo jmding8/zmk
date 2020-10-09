@@ -1,0 +1,8 @@
+# Copyright (c) 2020 Pete Johanson, Jamie Ding
+# SPDX-License-Identifier: MIT
+
+config SHIELD_LEMMA_LEFT
+	def_bool $(shields_list_contains,lemma_left)
+
+config SHIELD_LEMMA_RIGHT
+	def_bool $(shields_list_contains,lemma_right)

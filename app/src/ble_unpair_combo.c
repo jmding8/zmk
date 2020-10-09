@@ -55,7 +55,6 @@ void unpair_combo_work_handler(struct k_work *work) {
             return;
         }
     }
-
     zmk_ble_unpair_all();
 };
 

@@ -130,8 +130,6 @@
 
 /* The following are select consumer page usages */
 
-#define M_BRIU 0x6F
-#define M_BRID 0x70
 #define M_NEXT 0xB5
 #define M_PREV 0xB6
 #define M_STOP 0xB7
@@ -140,6 +138,12 @@
 #define M_MUTE 0xE2
 #define M_VOLU 0xE9
 #define M_VOLD 0xEA
+
+// Mac
+#define J_BRIU 0x1000F
+#define J_BRID 0x1000E
+#define J_VOLU 0x80
+#define J_VOLD 0x81
 
 #define MOD_LCTL (1 << 0x00)
 #define MOD_LSFT (1 << 0x01)
