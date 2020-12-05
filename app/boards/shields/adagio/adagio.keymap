@@ -11,9 +11,11 @@
 #define APL 0
 #define WIN 1
 #define NAV 2
-#define FUN 3
-#define ADJ 4
-#define ADK 5
+#define NUM 3
+#define FUN 5
+#define MED 5
+#define INT 6
+#define SYS 7
 
 / {
     keymap {
@@ -25,12 +27,12 @@
 //       | LSFT |  Z   |  X   |  C   |  V   |  B   |          |  N   |  M   |  ,<  |  .>  |  /?  | RSFT |
 //                        | LCTL | LOPT | LCMD |          | SPC  | NAV  | FUN  |
 // -------------------------------------------        ------------------------------------------------------
-        default_layer {
+        apple_layer {
             bindings = <
-    &lt ADK TAB &kp Q   &kp W     &kp E     &kp R     &kp T     /**/  &kp Y     &kp U     &kp I     &kp O    &kp P     &lt ADK BSLH
+    &lt INT TAB &kp Q   &kp W     &kp E     &kp R     &kp T     /**/  &kp Y     &kp U     &kp I     &kp O    &kp P     &lt INT BSLH
     &kp ESC   &kp A     &kp S     &kp D     &kp F     &kp G     /**/  &kp H     &kp J     &kp K     &kp L    &kp SCLN  &kp QUOT
     &kp LSFT  &kp Z     &kp X     &kp C     &kp V     &kp B     /**/  &kp N     &kp M     &kp CMMA  &kp DOT  &kp FSLH  &kp RSFT
-                                  &kp LCTL  &kp LALT  &kp LGUI  /**/  &kp SPC   &mo NAV   &mo FUN
+                                  &kp LCTL  &kp LALT  &kp LGUI  /**/  &kp SPC   &kp RGUI &kp RALT
             >;
         };
 
@@ -43,41 +45,57 @@
             >;
         };
 
-        layer_one {
+        nav_layer {
             bindings = <
-    &trans    &kp NUM_1 &kp NUM_2 &kp NUM_3 &kp NUM_4 &kp NUM_5 /**/  &trans    &trans    &kp UARW  &kp PGUP  &kp LBKT  &kp RBKT
-    &trans    &kp NUM_6 &kp NUM_7 &kp NUM_8 &kp NUM_9 &kp NUM_0 /**/  &kp GRAV  &kp LARW  &kp DARW  &kp RARW  &kp BKSP  &kp RET
-    &trans    &trans    &trans    &kp MINUS &kp EQL   &trans    /**/  &trans    &kp PGDN  &kp HOME  &kp END   &kp DEL   &trans
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &kp UARW  &kp PGUP  &kp LBKT  &kp RBKT
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp LARW  &kp DARW  &kp RARW  &kp BKSP  &kp RET
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp PGDN  &kp HOME  &kp END   &kp trans &kp DEL   &kp CLCK
                                   &trans    &trans    &trans    /**/  &trans    &trans    &trans
             >;
         };
 
-        layer_two {
+        num_layer {
             bindings = <
-    //&trans    &kp F1    &kp F2    &kp F3    &kp F4    &kp F5    /**/  &kp CLCK &trans     &kp J_VOLU &trans     &trans    &trans
-    //&trans    &kp F6    &kp F7    &kp F8    &kp F9    &kp F10   /**/  &kp PRSC &kp J_BRID &kp J_VOLD &kp J_BRIU &kp BKSP  &kp RET
-    &trans    &kp F1    &kp F2    &kp F3    &kp F4    &kp F5    /**/  &kp CLCK &trans     &kp VOLU   &trans     &trans    &trans
-    &trans    &kp F6    &kp F7    &kp F8    &kp F9    &kp F10   /**/  &kp PRSC &kp LABT   &kp VOLD   &kp RABT   &kp BKSP  &kp RET
-    &trans    &trans    &trans    &kp F11   &kp F12   &trans    /**/  &trans   &trans     &trans     &trans     &kp DEL   &trans
-                                  &trans    &trans    &trans    /**/  &trans   &trans     &trans
+    &trans    &trans    &trans    &mo FUN   &kp LSFT  &trans    /**/  &kp GRAV  &kp NUM_7 &kp NUM_8 &kp NUM_9 &kp PRSC  &trans
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp EQL   &kp NUM_4 &kp NUM_5 &kp NUM_6 &kp BKSP  &kp RET
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp MINUS &kp NUM_1 &kp NUM_2 &kp NUM_3 &kp DEL   &kp CLCK
+                                  &trans    &trans    &trans    /**/  &trans    &kp NUM_0 &trans
             >;
         };
 
-        layer_three {
+        function_layer {
             bindings = <
-    &trans  &trans  &tog WIN  &trans  &reset       &trans       /**/  &trans    &reset    &trans    &trans    &trans    &trans
-    &trans  &trans  &trans    &trans  &bootloader  &trans       /**/  &trans    &trans    &trans    &trans    &trans    &trans
-    &trans  &trans  &trans    &bt BT_CLR_CMD 0    &bt BT_CLR_CMD 1    &bt BT_CLR_CMD 2    /**/  &trans    &trans    &trans    &trans    &trans    &trans
-                        &bt BT_SEL 0  &bt BT_SEL 1 &bt BT_SEL 2 /**/  &trans    &trans    &trans
+    &trans    &trans    &trans    &trans    &kp LSFT  &trans    /**/  &kp F12   &kp F7    &kp F8    &kp F9    &kp PRSC  &trans
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp F11   &kp F4    &kp F5    &kp F6    &kp BKSP  &kp RET
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp F10   &kp F1    &kp F2    &kp F3    &kp DEL   &kp CLCK
+                                  &trans    &trans    &trans    /**/  &trans    &trans    &trans
             >;
         };
 
-        layer_four {
+        media_layer {
             bindings = <
-    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &trans    &trans    &trans    &trans
-    &mo ADJ   &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &trans    &trans    &trans    &mo ADJ
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp CLCK  &trans    &kp VOLU  &trans    &trans    &trans
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp PRSC  &kp LABT  &kp VOLD  &kp RABT  &trans    &trans
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &trans    &trans    &trans    &trans
                                   &trans    &trans    &trans    /**/  &trans    &trans    &trans
+            >;
+        };
+
+        intermediate_layer {
+            bindings = <
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &trans    &trans    &trans    &trans
+    &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &trans    &trans    &trans    &mo SYS
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &trans    &trans    &trans    &trans
+                                  &trans    &trans    &trans    /**/  &trans    &trans    &trans
+            >;
+        };
+
+        system_layer {
+            bindings = <
+    &trans    &trans    &tog WIN  &trans    &reset    &trans    /**/ &trans    &reset    &trans    &trans    &trans    &trans
+    &trans    &trans    &trans    &trans  &bootloader &trans    /**/ &trans  &bootloader &trans    &trans    &trans    &trans
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/ &trans    &trans    &trans    &trans    &trans    &trans
+       &bt BT_CLR_CMD 0   &bt BT_CLR_CMD 1   &bt BT_CLR_CMD 2   /**/ &bt BT_SEL 0   &bt BT_SEL 1    &bt BT_SEL 2
             >;
         };
     };

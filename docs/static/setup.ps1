@@ -16,13 +16,13 @@ function Get-Choice-From-Options {
         }
 
         Write-Host "$($Options.length + 1)) Quit"
-        $selection = Read-Host $Prompt
+        $selection = (Read-Host $Prompt) -as [int]
 
         if ($selection -eq $Options.length + 1) {
             Write-Host "Goodbye!"
             exit 1
         }
-        elseif ($selection -le $Options.length) {
+        elseif ($selection -le $Options.length -and $selection -gt 0) {
             $choice = $($selection - 1)
             break
         }
@@ -57,14 +57,27 @@ catch [System.Management.Automation.CommandNotFoundException] {
 }
 
 Test-Git-Config -Option "user.name" -ErrMsg "Git username not set!`nRun: git config --global user.name 'My Name'"
-Test-Git-Config -Option "user.email" -ErrMsg "Git email not set!`nRun: git config --global user.name 'example@myemail.com'"
+Test-Git-Config -Option "user.email" -ErrMsg "Git email not set!`nRun: git config --global user.email 'example@myemail.com'"
+
+$permission = (Get-Acl $pwd).Access | 
+?{$_.IdentityReference -match $env:UserName `
+	-and $_.FileSystemRights -match "FullControl" `
+		-or $_.FileSystemRights -match "Write"	} | 
+			
+		Select IdentityReference,FileSystemRights
+
+If (-Not $permission){
+    Write-Host "Sorry, you do not have write permissions in this directory."
+    Write-Host "Please try running this script again from a directory that you do have write permissions for."
+    exit 1
+}
 
 $repo_path = "https://github.com/zmkfirmware/zmk-config-split-template.git"
 
 $title = "ZMK Config Setup:"
 $prompt = "Pick an MCU board"
-$options = "nice!nano", "QMK Proton-C", "BlueMicro840 (v1)"
-$boards = "nice_nano", "proton_c", "bluemicro840_v1"
+$options = "nice!nano", "QMK Proton-C", "BlueMicro840 (v1)", "makerdiary nRF52840 M.2"
+$boards = "nice_nano", "proton_c", "bluemicro840_v1", "nrf52840_m2"
 
 Write-Host "$title"
 Write-Host ""
@@ -78,9 +91,9 @@ Write-Host "Keyboard Shield Selection:"
 $prompt = "Pick a keyboard"
 
 # TODO: Add support for "Other" and linking to docs on adding custom shields in user config repos.
-$options = "Kyria", "Lily58", "Corne", "Splitreus62", "Sofle", "Iris", "RoMac"
-$names = "kyria", "lily58", "corne", "splitreus62", "sofle", "iris", "romac"
-$splits = "y", "y", "y", "y", "y", "y", "n"
+$options = "Kyria", "Lily58", "Corne", "Splitreus62", "Sofle", "Iris", "Reviung41", "RoMac", "RoMac+", "makerdiary M60", "Microdox", "TG4X", "QAZ", "NIBBLE", "Jorne", "Jian"
+$names = "kyria", "lily58", "corne", "splitreus62", "sofle", "iris", "reviung41", "romac", "romac_plus", "m60", "microdox", "tg4x", "qaz", "nibble", "jorne", "jian"
+$splits = "y", "y", "y", "y", "y", "y", "n", "n", "n", "n", "y", "n", "n", "n", "y", "y"
 
 $choice = Get-Choice-From-Options -Options $options -Prompt $prompt
 $shield_title = $($options[$choice])

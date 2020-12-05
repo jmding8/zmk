@@ -1,5 +1,4 @@
 ---
-id: hardware
 title: Supported Hardware
 sidebar_label: Supported Hardware
 ---
@@ -28,8 +27,12 @@ That being said, there are currently only a few specific [boards](/docs/faq#what
 - [Lily58](https://github.com/kata0510/Lily58) (`lily58_left` and `lily58_right`)
 - [Sofle](https://github.com/josefadamcik/SofleKeyboard) (`sofle_left` and `sofle_right`)
 - [Splitreus62](https://github.com/Na-Cly/splitreus62) (`splitreus62_left` and `splitreus62_right`)
+- [Jorne](https://github.com/joric/jorne) (`jorne_left` and `jorne_right`)
+- [Jian](https://github.com/KGOH/Jian-Info) (`jian_left` and `jian_right`)
+- [Reviung41](https://github.com/gtips/reviung/tree/master/reviung41) (`reviung41`)
 - [RoMac+ v4](https://www.littlekeyboards.com/products/romac) (`romac_plus`)
-- [RoMac v2](https://mechboards.co.uk/shop/kits/romac-macro-pad/) (`romac')
+- [RoMac v2](https://mechboards.co.uk/shop/kits/romac-macro-pad/) (`romac`)
+- [Boardsource 3x4 Macro](https://boardsource.xyz/store/5ecc2008eee64242946c98c1) (`boardsource3x4`)
 - [QAZ](https://www.cbkbd.com/product/qaz-keyboard-kit) (`qaz`)
 
 ## Other Hardware
@@ -44,4 +47,4 @@ Until detailed documentation is available, feel free to ask questions about how 
 
 ## Contributing
 
-If you'd like to add support for a new keyboard shield, head over to the [New Keyboard Shield](/docs/dev-guide-new-shield) documentation.
+If you'd like to add support for a new keyboard shield, head over to the [New Keyboard Shield](development/new-shield) documentation.

@@ -1,43 +1,45 @@
 ---
-id: intro
 title: Introduction to ZMK
 sidebar_label: Introduction
+slug: /
 ---
 
 ZMK Firmware is an open source (MIT) keyboard
-firmware built on the [Zephyr™ Project](https://zephyrproject.org/) Real Time Operating System (RTOS).
-
-The goal is to provide a powerful, featureful keyboard firmware that is free
-of licensing issues that prevent upstream BLE support as a first-class
-feature.
+firmware built on the [Zephyr™ Project](https://zephyrproject.org/) Real Time Operating System (RTOS). ZMK's goal is to provide a modern, wireless, and powerful firmware free of licensing issues.
 
 ## Features
 
-At this point, ZMK is still missing many features. Currently, the working bits
-include:
+ZMK is currently missing some features found in other popular firmware. This table compares the features supported by ZMK, BlueMicro and QMK:
 
-- Wireless connectivity via BLE HID Over GATT (HOG)
-- USB connectivity
-- Low active power usage
-- Split keyboard support
-- [Keymaps and layers](behavior/layers)
-- [Hold-tap](behavior/hold-tap) (which includes [mod-tap](behavior/mod-tap), [layer-tap](behavior/layers))
-- [Basic HID over USB](behavior/key-press)
-- [Basic consumer (media) keycodes](behavior/key-press#consumer-key-press)
-- [Encoders](feature/encoders)
-- Basic [OLED display support](feature/displays)
-- [RGB Underglow](feature/underglow)
+| **Feature**                                                                                                               | ZMK | BlueMicro | QMK |
+| ------------------------------------------------------------------------------------------------------------------------- | :-: | :-------: | :-: |
+| Low Latency BLE Support                                                                                                   | ✅  |    ✅     |     |
+| Multi-Device BLE Support                                                                                                  | ✅  |           |     |
+| [USB Connectivity](behaviors/outputs)                                                                                     | ✅  |           | ✅  |
+| User Configuration Repositories                                                                                           | ✅  |           |     |
+| Split Keyboard Support                                                                                                    | ✅  |    ✅     | ✅  |
+| [Keymaps and Layers](behaviors/layers)                                                                                    | ✅  |    ✅     | ✅  |
+| [Hold-Tap](behaviors/hold-tap) (which includes [Mod-Tap](behaviors/mod-tap) and [Layer-Tap](behaviors/layers/#layer-tap)) | ✅  |    ✅     | ✅  |
+| [Keyboard Codes](codes/#keyboard)                                                                                         | ✅  |    ✅     | ✅  |
+| [Media](codes/#media-controls) & [Consumer](codes/#consumer-controls) Codes                                               | ✅  |    ✅     | ✅  |
+| [Encoders](features/encoders)[^1]                                                                                         | ✅  |           | ✅  |
+| [OLED Display Support](features/displays)[^2]                                                                             | 🚧  |    🚧     | ✅  |
+| [RGB Underglow](features/underglow)                                                                                       | ✅  |    ✅     | ✅  |
+| One Shot Keys                                                                                                             | 🚧  |    ✅     | ✅  |
+| Combo Keys                                                                                                                | 🚧  |           | ✅  |
+| Macros                                                                                                                    | 🚧  |    ✅     | ✅  |
+| Mouse Keys                                                                                                                |     |    ✅     | ✅  |
+| Low Active Power Usage                                                                                                    | ✅  |           |     |
+| [Low Power Sleep States](https://github.com/zmkfirmware/zmk/pull/211)                                                     | 🚧  |    ✅     |     |
+| [Low Power Mode (VCC Shutoff)](https://github.com/zmkfirmware/zmk/pull/242)                                               | 🚧  |           |     |
+| [Battery Reporting](https://github.com/zmkfirmware/zmk/issues/47)                                                         | 🚧  |    ✅     |     |
+| Shell over BLE                                                                                                            |     |           |     |
+| Realtime Keymap Updating                                                                                                  | 💡  |           | ✅  |
+| AVR/8 Bit                                                                                                                 |     |           | ✅  |
+| [Wide Range of ARM Chips Supported](https://docs.zephyrproject.org/latest/boards/index.html)                              | ✅  |           |     |
 
-## Missing Features
-
-- One Shot Keys
-- Combo keys
-- Macros
-- Complete split support (encoders and RGB are not supported on the 'peripheral' side)
-- Battery reporting
-- Low power sleep states
-- Low power mode (to toggle LEDs and screen off)
-- Shell over BLE
+[^2]: Encoders are not currently supported on peripheral side splits.
+[^1]: OLEDs are currently proof of concept in ZMK.
 
 ## Code Of Conduct
 

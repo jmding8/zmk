@@ -1,4 +1,0 @@
-mo_pressed: position 1 layer 1
-kp_pressed: usage_page 0x0c keycode 0xb5
-kp_released: usage_page 0x0c keycode 0xb5
-mo_released: position 1 layer 1
