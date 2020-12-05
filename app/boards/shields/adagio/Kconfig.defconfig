@@ -8,7 +8,6 @@ config ZMK_KEYBOARD_NAME
 
 endif
 
-
 if SHIELD_ADAGIO_RIGHT
 
 config ZMK_KEYBOARD_NAME
