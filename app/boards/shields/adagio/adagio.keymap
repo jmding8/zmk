@@ -12,16 +12,18 @@
 #define WIN 1
 #define NAV 2
 #define NUM 3
-#define FUN 4
-#define MED 5
-#define SYS 6
+#define SNM 4
+#define FUN 5
+#define SFN 6
+#define MED 7
+#define SYS 8
 
 / {
     keymap {
         compatible = "zmk,keymap";
         apple_layer {
             bindings = <
-    &lt FUN TAB  &kp Q  &kp W     &kp E     &kp R     &kp T     /**/  &kp Y     &kp U     &kp I     &kp O    &kp P     &kp BSLH
+    &lt SNM TAB  &kp Q  &kp W     &kp E     &kp R     &kp T     /**/  &kp Y     &kp U     &kp I     &kp O    &kp P     &kp BSLH
     &lt NUM ESC  &kp A  &kp S     &kp D     &kp F     &kp G     /**/  &kp H     &kp J     &kp K     &kp L    &kp SCLN  &kp QUOT
     &kp LSFT     &kp Z  &kp X     &kp C     &kp V     &kp B     /**/  &kp N     &kp M     &kp CMMA  &kp DOT  &kp FSLH  &kp RSFT
                                   &kp LCTL  &kp LALT  &kp LGUI  /**/  &kp SPC   &mo NAV   &mo MED
@@ -41,25 +43,43 @@
             bindings = <
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &kp UARW  &kp PGUP  &kp PRSC  &trans
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp LARW  &kp DARW  &kp RARW  &kp BKSP  &kp RET
-    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp PGDN  &kp HOME  &kp END   &trans    &kp DEL   &kp CLCK
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp PGDN  &kp HOME  &kp END   &kp DEL   &kp CLCK
                                   &trans    &trans    &trans    /**/  &trans    &trans    &trans
             >;
         };
 
         num_layer {
             bindings = <
-    &mo SYS   &trans    &trans    &trans    &kp LSFT  &trans    /**/  &kp GRAV  &kp NUM_7 &kp NUM_8 &kp NUM_9 &kp LBKT  &kp RBKT
-    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp EQL   &kp NUM_4 &kp NUM_5 &kp NUM_6 &kp BKSP  &kp RET
+    &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &kp GRAV  &kp NUM_7 &kp NUM_8 &kp NUM_9 &kp LBKT  &kp RBKT
+    &trans    &mo FUN   &trans    &trans    &trans    &trans    /**/  &kp EQL   &kp NUM_4 &kp NUM_5 &kp NUM_6 &kp BKSP  &kp RET
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp MINUS &kp NUM_1 &kp NUM_2 &kp NUM_3 &kp DEL   &kp CLCK
                                   &trans    &trans    &trans    /**/  &trans    &kp NUM_0 &trans
             >;
         };
 
+        shifted_num_layer {
+            bindings = <
+    &trans    &mo SFN   &trans    &trans    &trans    &trans    /**/  &kp TILDE &kp AMPS  &kp STAR  &kp LPAR  &kp LBRC     &kp RBRC
+    &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &kp PLUS  &kp DLLR  &kp PRCNT &kp CARET &kp LS(BKSP) &kp LS(RET)
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp UNDER &kp EXCL  &kp AT    &kp HASH  &kp LS(DEL)  &kp LS(CLCK)
+                                  &trans    &trans    &trans    /**/  &trans    &kp RPAR  &trans
+            >;
+        };
+
         function_layer {
             bindings = <
-    &trans    &trans    &trans    &trans    &kp LSFT  &trans    /**/  &kp F12   &kp F7    &kp F8    &kp F9    &kp LBKT  &kp RBKT
-    &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &kp F11   &kp F4    &kp F5    &kp F6    &kp BKSP  &kp RET
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp F12   &kp F7    &kp F8    &kp F9    &kp LBKT  &kp RBKT
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp F11   &kp F4    &kp F5    &kp F6    &kp BKSP  &kp RET
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp F10   &kp F1    &kp F2    &kp F3    &kp DEL   &kp CLCK
+                                  &trans    &trans    &trans    /**/  &trans    &trans    &trans
+            >;
+        };
+
+        shifted_function_layer {
+            bindings = <
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp LS(F12) &kp LS(F7) &kp LS(F8) &kp LS(F9) &kp LBRC     &kp RBRC
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp LS(F11) &kp LS(F4) &kp LS(F5) &kp LS(F6) &kp LS(BKSP) &kp LS(RET)
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp LS(F10) &kp LS(F1) &kp LS(F2) &kp LS(F3) &kp LS(DEL)  &kp LS(CLCK)
                                   &trans    &trans    &trans    /**/  &trans    &trans    &trans
             >;
         };
