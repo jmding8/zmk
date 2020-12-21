@@ -10,11 +10,11 @@
 
 #define APL 0
 #define WIN 1
-#define NAV 2
-#define NUM 3
-#define SNM 4
-#define FUN 5
-#define SFN 6
+#define NUM 2
+#define SNM 3
+#define FUN 4
+#define SFN 5
+#define NAV 6
 #define MED 7
 #define SYS 8
 
@@ -39,30 +39,21 @@
             >;
         };
 
-        nav_layer {
-            bindings = <
-    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &kp UARW  &kp PGUP  &kp PRSC  &trans
-    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp LARW  &kp DARW  &kp RARW  &kp BKSP  &kp RET
-    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp PGDN  &kp HOME  &kp END   &kp DEL   &kp CLCK
-                                  &trans    &trans    &trans    /**/  &trans    &trans    &trans
-            >;
-        };
-
         num_layer {
             bindings = <
-    &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &kp GRAV  &kp NUM_7 &kp NUM_8 &kp NUM_9 &kp LBKT  &kp RBKT
-    &trans    &mo FUN   &trans    &trans    &trans    &trans    /**/  &kp EQL   &kp NUM_4 &kp NUM_5 &kp NUM_6 &kp BKSP  &kp RET
+    &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp NUM_7 &kp NUM_8 &kp NUM_9 &kp LBKT  &kp RBKT
+    &trans    &mo FUN   &trans    &kp GRAV  &kp TILDE &trans    /**/  &kp EQL   &kp NUM_4 &kp NUM_5 &kp NUM_6 &kp BKSP  &kp RET
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp MINUS &kp NUM_1 &kp NUM_2 &kp NUM_3 &kp DEL   &kp CLCK
-                                  &trans    &trans    &trans    /**/  &trans    &kp NUM_0 &trans
+                                  &trans    &trans    &trans    /**/  &kp NUM_0 &trans    &trans
             >;
         };
 
         shifted_num_layer {
             bindings = <
-    &trans    &mo SFN   &trans    &trans    &trans    &trans    /**/  &kp TILDE &kp AMPS  &kp STAR  &kp LPAR  &kp LBRC     &kp RBRC
+    &trans    &mo SFN   &trans    &trans    &trans    &trans    /**/  &trans    &kp AMPS  &kp STAR  &kp LPAR  &kp LBRC     &kp RBRC
     &mo SYS   &trans    &trans    &trans    &trans    &trans    /**/  &kp PLUS  &kp DLLR  &kp PRCNT &kp CARET &kp LS(BKSP) &kp LS(RET)
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp UNDER &kp EXCL  &kp AT    &kp HASH  &kp LS(DEL)  &kp LS(CLCK)
-                                  &trans    &trans    &trans    /**/  &trans    &kp RPAR  &trans
+                                  &trans    &trans    &trans    /**/  &kp RPAR  &trans    &trans
             >;
         };
 
@@ -80,6 +71,15 @@
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp LS(F12) &kp LS(F7) &kp LS(F8) &kp LS(F9) &kp LBRC     &kp RBRC
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp LS(F11) &kp LS(F4) &kp LS(F5) &kp LS(F6) &kp LS(BKSP) &kp LS(RET)
     &trans    &trans    &trans    &trans    &trans    &trans    /**/  &kp LS(F10) &kp LS(F1) &kp LS(F2) &kp LS(F3) &kp LS(DEL)  &kp LS(CLCK)
+                                  &trans    &trans    &trans    /**/  &trans    &trans    &trans
+            >;
+        };
+
+        nav_layer {
+            bindings = <
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &trans    &kp UARW  &kp PGUP  &kp PRSC  &trans
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp LARW  &kp DARW  &kp RARW  &kp BKSP  &kp RET
+    &trans    &trans    &trans    &trans    &trans    &trans    /**/  &trans    &kp PGDN  &kp HOME  &kp END   &kp DEL   &kp CLCK
                                   &trans    &trans    &trans    /**/  &trans    &trans    &trans
             >;
         };
