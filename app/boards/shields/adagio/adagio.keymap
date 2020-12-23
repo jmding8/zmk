@@ -29,15 +29,6 @@
 			tapping_term_ms = <200>;
 			bindings = <&mo>, <&kp>;
 		};
-
-        ltg: layer_tap_toggle {
-			compatible = "zmk,behavior-hold-tap";
-			label = "LAYER_TAP_TOGGLE";
-			#binding-cells = <2>;
-			flavor = "hold-preferred";
-			tapping_term_ms = <200>;
-			bindings = <&mo>, <&tog>;
-		};
     };
     
     keymap {
@@ -47,7 +38,7 @@
     &hlt SNM TAB &kp Q  &kp W     &kp E     &kp R     &kp T     /**/  &kp Y     &kp U     &kp I     &kp O    &kp P     &kp BSLH
     &hlt NUM ESC &kp A  &kp S     &kp D     &kp F     &kp G     /**/  &kp H     &kp J     &kp K     &kp L    &kp SCLN  &kp QUOT
     &kp LSFT     &kp Z  &kp X     &kp C     &kp V     &kp B     /**/  &kp N     &kp M     &kp CMMA  &kp DOT  &kp FSLH  &kp RSFT
-                                  &kp LCTL  &kp LALT  &kp LGUI  /**/  &kp SPC &ltg NAV NAV &ltg MED MED
+                                  &kp LCTL  &kp LALT  &kp LGUI  /**/  &kp SPC   &mo NAV   &mo MED
             >;
         };
 
