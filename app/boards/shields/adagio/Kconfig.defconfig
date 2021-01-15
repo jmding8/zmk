@@ -1,16 +1,25 @@
-# Copyright (c) 2020 Pete Johanson, Richard Jones
-# SPDX-License-Identifier: MIT
-
 if SHIELD_ADAGIO_LEFT
 
 config ZMK_KEYBOARD_NAME
 	default "Adagio-L"
 
+config ZMK_SPLIT_BLE_ROLE_CENTRAL
+	default y
+
 endif
+
 
 if SHIELD_ADAGIO_RIGHT
 
 config ZMK_KEYBOARD_NAME
 	default "Adagio-R"
+
+endif
+
+
+if SHIELD_ADAGIO_LEFT || SHIELD_ADAGIO_RIGHT
+
+config ZMK_SPLIT
+	default y
 
 endif
