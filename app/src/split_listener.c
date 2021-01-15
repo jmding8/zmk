@@ -14,8 +14,8 @@
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
-#include <zmk/event-manager.h>
-#include <zmk/events/position-state-changed.h>
+#include <zmk/event_manager.h>
+#include <zmk/events/position_state_changed.h>
 #include <zmk/hid.h>
 #include <zmk/endpoints.h>
 
@@ -29,7 +29,7 @@ int split_listener(const struct zmk_event_header *eh) {
             return zmk_split_bt_position_released(ev->position);
         }
     }
-    return 0;
+    return ZMK_EV_EVENT_BUBBLE;
 }
 
 ZMK_LISTENER(split_listener, split_listener);

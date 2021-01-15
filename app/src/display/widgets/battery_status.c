@@ -11,9 +11,9 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #include <zmk/display/widgets/battery_status.h>
 #include <zmk/usb.h>
-#include <zmk/events/usb-conn-state-changed.h>
-#include <zmk/event-manager.h>
-#include <zmk/events/battery-state-changed.h>
+#include <zmk/events/usb_conn_state_changed.h>
+#include <zmk/event_manager.h>
+#include <zmk/events/battery_state_changed.h>
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 static lv_style_t label_style;
@@ -78,7 +78,7 @@ lv_obj_t *zmk_widget_battery_status_obj(struct zmk_widget_battery_status *widget
 int battery_status_listener(const struct zmk_event_header *eh) {
     struct zmk_widget_battery_status *widget;
     SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_battery_symbol(widget->obj); }
-    return 0;
+    return ZMK_EV_EVENT_BUBBLE;
 }
 
 ZMK_LISTENER(widget_battery_status, battery_status_listener)

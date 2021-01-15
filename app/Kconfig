@@ -83,7 +83,6 @@ menu "Split Support"
 
 config ZMK_SPLIT
 	bool "Split keyboard support"
-	default n
 
 if ZMK_SPLIT
 
@@ -95,19 +94,12 @@ config ZMK_SPLIT_BLE
 
 if ZMK_SPLIT_BLE
 
-choice ZMK_SPLIT_BLE_ROLE
-	bool "BLE Role For Split Communication"
-	default ZMK_SPLIT_BLE_ROLE_CENTRAL
-
 config ZMK_SPLIT_BLE_ROLE_CENTRAL
 	bool "Central"
 	select BT_CENTRAL
 	select BT_GATT_CLIENT
 
-config ZMK_SPLIT_BLE_ROLE_PERIPHERAL
-	bool "Peripheral"
-
-if ZMK_SPLIT_BLE_ROLE_PERIPHERAL
+if !ZMK_SPLIT_BLE_ROLE_CENTRAL
 
 config ZMK_USB
 	default n
@@ -121,11 +113,8 @@ config BT_MAX_CONN
 config BT_GAP_AUTO_UPDATE_CONN_PARAMS
 	default n
 
-#ZMK_SPLIT_BLE_ROLE_PERIPHERAL
+#!ZMK_SPLIT_BLE_ROLE_CENTRAL
 endif
-
-#ZMK_SPLIT_BLE_ROLE
-endchoice
 
 #ZMK_SPLIT_BLE
 endif
@@ -245,6 +234,9 @@ choice SYS_PM_POLICY
 	default SYS_PM_POLICY_APP
 endchoice
 
+config DEVICE_POWER_MANAGEMENT
+	default y
+
 config ZMK_IDLE_SLEEP_TIMEOUT
 	int "Milliseconds of inactivity before entering deep sleep"
 	default 900000
@@ -257,6 +249,23 @@ config ZMK_EXT_POWER
 	default y
 
 #Power Management
+endmenu
+
+menu "Combo options"
+
+config ZMK_COMBO_MAX_PRESSED_COMBOS
+	int "Maximum number of currently pressed combos"
+	default 4
+
+config ZMK_COMBO_MAX_COMBOS_PER_KEY
+	int "Maximum number of combos per key"
+	default 5
+
+config ZMK_COMBO_MAX_KEYS_PER_COMBO
+	int "Maximum number of keys per combo"
+	default 4
+
+#Display/LED Options
 endmenu
 
 menu "Advanced"
@@ -301,6 +310,50 @@ config ZMK_KSCAN_COMPOSITE_DRIVER
 #KSCAN Settings
 endmenu
 
+menu "USB Logging"
+
+config ZMK_USB_LOGGING
+	bool "Enable USB CDC ACM logging to help debug"
+	select LOG
+	select USB
+	select USB_DEVICE_STACK
+	select USB_CDC_ACM
+	select SERIAL
+	select CONSOLE
+	select UART_INTERRUPT_DRIVEN
+	select UART_LINE_CTRL
+	select UART_CONSOLE
+	select USB_UART_CONSOLE
+
+if ZMK_USB_LOGGING
+
+config ZMK_LOG_LEVEL
+	default 4
+
+config USB_CDC_ACM_RINGBUF_SIZE
+	default 1024
+
+config USB_CDC_ACM_DEVICE_NAME
+	default "CDC_ACM"
+
+config USB_CDC_ACM_DEVICE_COUNT
+	default 1
+
+config UART_CONSOLE_ON_DEV_NAME
+	default "CDC_ACM_0"
+
+config LOG_BUFFER_SIZE
+	default 8192
+
+config LOG_STRDUP_BUF_COUNT
+	default 16
+
+#ZMK_USB_LOGGING
+endif
+
+#USB Logging
+endmenu
+
 if SETTINGS
 
 config ZMK_SETTINGS_SAVE_DEBOUNCE
@@ -324,6 +377,9 @@ config KERNEL_BIN_NAME
 
 config REBOOT
 	default y
+
+config USB
+	default y if HAS_HW_NRF_USBD
 
 module = ZMK
 module-str = zmk

@@ -91,6 +91,9 @@ endif
 ```
 
 Similarly to defining the halves of a split board in `Kconfig.shield` it is important to set the `ZMK_KEYBOARD_NAME` for each half of a split keyboard.
+You'll also want to set which half is the central side. Most boards set it to the left.
+Then on the peripheral half, you'll want to turn USB on so that it shows USB status on displays properly.
+Finally, you'll want to turn on the split option for both sides. This can all be seen below.
 
 ```
 if SHIELD_MY_BOARD_LEFT
@@ -98,12 +101,22 @@ if SHIELD_MY_BOARD_LEFT
 config ZMK_KEYBOARD_NAME
 	default "My Awesome Keyboard Left"
 
+config ZMK_SPLIT_BLE_ROLE_CENTRAL
+	default y
+
 endif
 
 if SHIELD_MY_BOARD_RIGHT
 
 config ZMK_KEYBOARD_NAME
 	default "My Awesome Keyboard Right"
+
+endif
+
+if SHIELD_MY_BOARD_LEFT || SHIELD_MY_BOARD_RIGHT
+
+config ZMK_SPLIT
+	default y
 
 endif
 ```
@@ -163,7 +176,7 @@ It is preferred to define only the `col-gpios` or `row-gpios` in the common shie
 For `col2row` directed boards like the iris, the shared .dtsi file may look like this:
 
 ```
-#include <dt-bindings/zmk/matrix-transform.h>
+#include <dt-bindings/zmk/matrix_transform.h>
 
 / {
 	chosen {
@@ -203,6 +216,7 @@ RC(3,0) RC(3,1) RC(3,2) RC(3,3) RC(3,4) RC(3,5) RC(4,2) RC(4,9) RC(3,6) RC(3,7) 
 			;
 
 	};
+};
 ```
 
 :::note
@@ -264,24 +278,7 @@ For example, a split board called `my_awesome_split_board` would have the follow
 - `my_awesome_split_board_left.conf` - Configuration elements only affect left half
 - `my_awesome_split_board_right.conf` - Configuration elements only affect right half
 
-For proper communication between keyboard halves and that between the central half and the computer,
-the **the central and peripheral halves of the keyboard must be defined**. This can be seen below.
-
-```
-// Central Half (Usually the left side: my_awesome_split_board_left.conf)
-
-CONFIG_ZMK_SPLIT=y
-CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL=y
-```
-
-```
-// Peripheral Half (Usually the right side: my_awesome_split_board_right.conf)
-
-CONFIG_ZMK_SPLIT=y
-CONFIG_ZMK_SPLIT_BLE_ROLE_Peripheral=y
-```
-
-Using the .conf file that affects both halves of a split board would be for adding features like deep-sleep or rotary encoders.
+In most case you'll only need to use the .conf file that affects both halves of a split board. It's used for adding features like deep-sleep or rotary encoders.
 
 ```
 // my_awesome_split_board.conf
@@ -315,7 +312,7 @@ Whenever that default key position mapping is insufficient, the `<shield_name>.o
 Here is an example for the [nice60](https://github.com/Nicell/nice60), which uses an efficient 8x8 GPIO matrix, and uses a transform:
 
 ```
-#include <dt-bindings/zmk/matrix-transform.h>
+#include <dt-bindings/zmk/matrix_transform.h>
 
 / {
 	chosen {
@@ -344,7 +341,7 @@ RC(7,0)    RC(7,1)   RC(7,2)                     RC(7,3)                    RC(7
 
 Some important things to note:
 
-- The `#include <dt-bindings/zmk/matrix-transform.h>` is critical. The `RC` macro is used to generate the internal storage in the matrix transform, and is actually replaced by a C preprocessor before the final devicetree is compiled into ZMK.
+- The `#include <dt-bindings/zmk/matrix_transform.h>` is critical. The `RC` macro is used to generate the internal storage in the matrix transform, and is actually replaced by a C preprocessor before the final devicetree is compiled into ZMK.
 - `RC(row, column)` is placed sequentially to define what row and column values that position corresponds to.
 - If you have a keyboard with options for `2u` keys in certain positions, or break away portions, it is a good idea to set the chosen `zmk,matrix_transform` to the default arrangement, and include _other_ possible matrix transform nodes in the devicetree that users can select in their user config by overriding the chosen node.
 
