@@ -1,0 +1,25 @@
+if SHIELD_ANDANTE_LEFT
+
+config ZMK_KEYBOARD_NAME
+	default "Andante-L"
+
+config ZMK_SPLIT_BLE_ROLE_CENTRAL
+	default y
+
+endif
+
+
+if SHIELD_ANDANTE_RIGHT
+
+config ZMK_KEYBOARD_NAME
+	default "Andante-R"
+
+endif
+
+
+if SHIELD_ANDANTE_LEFT || SHIELD_ANDANTE_RIGHT
+
+config ZMK_SPLIT
+	default y
+
+endif
