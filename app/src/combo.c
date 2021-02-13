@@ -17,6 +17,7 @@
 #include <zmk/events/position_state_changed.h>
 #include <zmk/hid.h>
 #include <zmk/matrix.h>
+#include <zmk/keymap.h>
 
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
@@ -33,6 +34,8 @@ struct combo_cfg {
     // the virtual key position is a key position outside the range used by the keyboard.
     // it is necessary so hold-taps can uniquely identify a behavior.
     int32_t virtual_key_position;
+    int32_t layers_len;
+    int8_t layers[];
 };
 
 struct active_combo {
@@ -40,7 +43,7 @@ struct active_combo {
     // key_positions_pressed is filled with key_positions when the combo is pressed.
     // The keys are removed from this array when they are released.
     // Once this array is empty, the behavior is released.
-    struct position_state_changed *key_positions_pressed[CONFIG_ZMK_COMBO_MAX_KEYS_PER_COMBO];
+    const zmk_event_t *key_positions_pressed[CONFIG_ZMK_COMBO_MAX_KEYS_PER_COMBO];
 };
 
 struct combo_candidate {
@@ -52,7 +55,7 @@ struct combo_candidate {
 };
 
 // set of keys pressed
-struct position_state_changed *pressed_keys[CONFIG_ZMK_COMBO_MAX_KEYS_PER_COMBO] = {NULL};
+const zmk_event_t *pressed_keys[CONFIG_ZMK_COMBO_MAX_KEYS_PER_COMBO] = {NULL};
 // the set of candidate combos based on the currently pressed_keys
 struct combo_candidate candidates[CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY];
 // the last candidate that was completely pressed
@@ -104,17 +107,35 @@ static int initialize_combo(struct combo_cfg *new_combo) {
     return 0;
 }
 
+static bool combo_active_on_layer(struct combo_cfg *combo, uint8_t layer) {
+    if (combo->layers[0] == -1) {
+        // -1 in the first layer position is global layer scope
+        return true;
+    }
+    for (int j = 0; j < combo->layers_len; j++) {
+        if (combo->layers[j] == layer) {
+            return true;
+        }
+    }
+    return false;
+}
+
 static int setup_candidates_for_first_keypress(int32_t position, int64_t timestamp) {
+    int number_of_combo_candidates = 0;
+    uint8_t highest_active_layer = zmk_keymap_highest_layer_active();
     for (int i = 0; i < CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY; i++) {
         struct combo_cfg *combo = combo_lookup[position][i];
         if (combo == NULL) {
-            return i;
+            return number_of_combo_candidates;
         }
-        candidates[i].combo = combo;
-        candidates[i].timeout_at = timestamp + combo->timeout_ms;
+        if (combo_active_on_layer(combo, highest_active_layer)) {
+            candidates[number_of_combo_candidates].combo = combo;
+            candidates[number_of_combo_candidates].timeout_at = timestamp + combo->timeout_ms;
+            number_of_combo_candidates++;
+        }
         // LOG_DBG("combo timeout %d %d %d", position, i, candidates[i].timeout_at);
     }
-    return CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY;
+    return number_of_combo_candidates;
 }
 
 static int filter_candidates(int32_t position) {
@@ -202,7 +223,7 @@ static int clear_candidates() {
     return CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY;
 }
 
-static int capture_pressed_key(struct position_state_changed *ev) {
+static int capture_pressed_key(const zmk_event_t *ev) {
     for (int i = 0; i < CONFIG_ZMK_COMBO_MAX_COMBOS_PER_KEY; i++) {
         if (pressed_keys[i] != NULL) {
             continue;
@@ -228,7 +249,7 @@ static void release_pressed_keys() {
         if (pressed_keys[i] == NULL) {
             return;
         }
-        struct position_state_changed *captured_event = pressed_keys[i];
+        const zmk_event_t *captured_event = pressed_keys[i];
         pressed_keys[i] = NULL;
         ZMK_EVENT_RAISE(captured_event);
     }
@@ -290,7 +311,8 @@ static void activate_combo(struct combo_cfg *combo) {
         return;
     }
     move_pressed_keys_to_active_combo(active_combo);
-    press_combo_behavior(combo, active_combo->key_positions_pressed[0]->timestamp);
+    press_combo_behavior(
+        combo, as_zmk_position_state_changed(active_combo->key_positions_pressed[0])->timestamp);
 }
 
 static void deactivate_combo(int active_combo_index) {
@@ -314,10 +336,11 @@ static bool release_combo_key(int32_t position, int64_t timestamp) {
         for (int i = 0; i < active_combo->combo->key_position_len; i++) {
             if (active_combo->key_positions_pressed[i] == NULL) {
                 all_keys_pressed = false;
-            } else if (active_combo->key_positions_pressed[i]->position != position) {
+            } else if (as_zmk_position_state_changed(active_combo->key_positions_pressed[i])
+                           ->position != position) {
                 all_keys_released = false;
             } else { // not null and position matches
-                k_free(active_combo->key_positions_pressed[i]);
+                ZMK_EVENT_FREE(active_combo->key_positions_pressed[i]);
                 active_combo->key_positions_pressed[i] = NULL;
                 key_released = true;
             }
@@ -362,16 +385,16 @@ static void update_timeout_task() {
     }
 }
 
-static int position_state_down(struct position_state_changed *ev) {
+static int position_state_down(const zmk_event_t *ev, struct zmk_position_state_changed *data) {
     int num_candidates;
     if (candidates[0].combo == NULL) {
-        num_candidates = setup_candidates_for_first_keypress(ev->position, ev->timestamp);
+        num_candidates = setup_candidates_for_first_keypress(data->position, data->timestamp);
         if (num_candidates == 0) {
             return 0;
         }
     } else {
-        filter_timed_out_candidates(ev->timestamp);
-        num_candidates = filter_candidates(ev->position);
+        filter_timed_out_candidates(data->timestamp);
+        num_candidates = filter_candidates(data->position);
     }
     update_timeout_task();
 
@@ -395,7 +418,7 @@ static int position_state_down(struct position_state_changed *ev) {
     }
 }
 
-static int position_state_up(struct position_state_changed *ev) {
+static int position_state_up(struct zmk_position_state_changed *ev) {
     cleanup();
     if (release_combo_key(ev->position, ev->timestamp)) {
         return ZMK_EV_EVENT_HANDLED;
@@ -415,21 +438,21 @@ static void combo_timeout_handler(struct k_work *item) {
     update_timeout_task();
 }
 
-static int position_state_changed_listener(const struct zmk_event_header *eh) {
-    if (!is_position_state_changed(eh)) {
+static int position_state_changed_listener(const zmk_event_t *ev) {
+    struct zmk_position_state_changed *data = as_zmk_position_state_changed(ev);
+    if (data == NULL) {
         return 0;
     }
 
-    struct position_state_changed *ev = cast_position_state_changed(eh);
-    if (ev->state) { // keydown
-        return position_state_down(ev);
+    if (data->state) { // keydown
+        return position_state_down(ev, data);
     } else { // keyup
-        return position_state_up(ev);
+        return position_state_up(data);
     }
 }
 
 ZMK_LISTENER(combo, position_state_changed_listener);
-ZMK_SUBSCRIPTION(combo, position_state_changed);
+ZMK_SUBSCRIPTION(combo, zmk_position_state_changed);
 
 // todo: remove this once #506 is merged and #include <zmk/keymap.h>
 #define KEY_BINDING_TO_STRUCT(idx, drv_inst)                                                       \
@@ -449,6 +472,8 @@ ZMK_SUBSCRIPTION(combo, position_state_changed);
         .behavior = KEY_BINDING_TO_STRUCT(0, n),                                                   \
         .virtual_key_position = ZMK_KEYMAP_LEN + __COUNTER__,                                      \
         .slow_release = DT_PROP(n, slow_release),                                                  \
+        .layers = DT_PROP(n, layers),                                                              \
+        .layers_len = DT_PROP_LEN(n, layers),                                                      \
     };
 
 #define INITIALIZE_COMBO(n) initialize_combo(&combo_config_##n);
