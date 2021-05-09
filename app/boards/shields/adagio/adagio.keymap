@@ -10,24 +10,30 @@
 #define NAV 4
 #define MED 5
 #define SYS 6
-// #define TRS 7
+#define SNM 7
+#define SFN 8
 
 / {
-
-// Using a combo to trigger shift + num_layer doesn't work well because the combo
-// "consumes" both key-down events, so releasing one of the two combo keys fully
-// disengages both the shift and the num_layer hold beaviors.
-/*
+// Using a combos to trigger shift + layer doesn't always work because the combo
+// "consumes" both key-down events. Releasing any one of the combo keys results in 
+// both the shift and the layer holds disengaging. This makes inputting
+// strings like "$4" problematic, as it requires fully releasing both combo keys
+// after the "$", and then re-pressing the layer key for the "4".
     combos {
         compatible = "zmk,combos";
+
         combo_shifted_num {
             timeout-ms = <50>;
             key-positions = <12 13>;
             bindings = <&mo SNM>;
-            //bindings = <&mo NUM &kp J>;
+        };
+
+        combo_shifted_func {
+            timeout-ms = <50>;
+            key-positions = <0 1>;
+            bindings = <&mo SFN>;
         };
     };
-*/
 
     behaviors {
         hlt: hold_preferred_layer_tap {
@@ -133,12 +139,21 @@
             >;
         };
 
-        transition_layer {
+        shifted_num_layer {
             bindings = <
-    &mo FUN  &trans  &trans  &trans  &trans  &trans  /**/  &trans  &trans  &trans  &trans  &trans  &trans
-    &mo NUM  &trans  &trans  &trans  &trans  &trans  /**/  &trans  &trans  &trans  &trans  &trans  &trans
-    &trans   &trans  &trans  &trans  &trans  &trans  /**/  &trans  &trans  &trans  &trans  &trans  &trans
-                             &trans  &trans  &trans  /**/  &trans  &trans  &trans
+    &mo SYS  &trans    &trans  &trans        &trans         &trans  /**/  &trans         &kp LS(NUM_7)  &kp LS(NUM_8)  &kp LS(NUM_9)  &trans        &trans
+    &trans   &kp LSFT  &trans  &kp LS(GRAV)  &kp LS(TILDE)  &trans  /**/  &kp LS(EQL)    &kp LS(NUM_4)  &kp LS(NUM_5)  &kp LS(NUM_6)  &kp LS(LBKT)  &kp LS(RBKT)
+    &trans   &trans    &trans  &trans        &trans         &trans  /**/  &kp LS(MINUS)  &kp LS(NUM_1)  &kp LS(NUM_2)  &kp LS(NUM_3)  &trans        &trans
+                               &trans        &trans         &trans  /**/  &trans         &kp LS(NUM_0)  &kp LS(DOT)
+            >;
+        };
+
+        shifted_func_layer {
+            bindings = <
+    &trans   &kp LSFT  &trans  &trans  &trans  &trans  /**/  &kp LS(F12)  &kp LS(F7)  &kp LS(F8)  &kp LS(F9)  &trans        &trans
+    &mo SYS  &trans    &trans  &trans  &trans  &trans  /**/  &kp LS(F11)  &kp LS(F4)  &kp LS(F5)  &kp LS(F6)  &kp LS(LBKT)  &kp LS(RBKT)
+    &trans   &trans    &trans  &trans  &trans  &trans  /**/  &kp LS(F10)  &kp LS(F1)  &kp LS(F2)  &kp LS(F3)  &trans        &trans
+                               &trans  &trans  &trans  /**/  &trans       &trans      &trans
             >;
         };
 
