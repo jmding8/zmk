@@ -19,6 +19,7 @@
 // both the shift and the layer holds disengaging. This makes inputting
 // strings like "$4" problematic, as it requires fully releasing both combo keys
 // after the "$", and then re-pressing the layer key for the "4".
+/*
     combos {
         compatible = "zmk,combos";
 
@@ -34,6 +35,7 @@
             bindings = <&mo SFN>;
         };
     };
+*/
 
     behaviors {
         hlt: hold_preferred_layer_tap {
